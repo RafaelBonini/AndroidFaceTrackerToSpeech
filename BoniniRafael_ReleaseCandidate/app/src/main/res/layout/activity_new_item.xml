@@ -6,4 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".Manager.NewItemActivity">
 
+    <EditText
+        android:id="@+id/textInput_ET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter text.."
+        android:inputType="textPersonName"
+        android:lines="3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"/>
+
 </android.support.constraint.ConstraintLayout>
