@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Manager.ManagerActivity;
+
 public class MainActivity extends AppCompatActivity {
 
 
