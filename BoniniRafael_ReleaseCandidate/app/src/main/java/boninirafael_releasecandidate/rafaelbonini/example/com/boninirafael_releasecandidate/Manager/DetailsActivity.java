@@ -1,12 +1,16 @@
 package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Manager;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.gson.Gson;
@@ -55,6 +59,29 @@ public class DetailsActivity extends AppCompatActivity {
         editTextInput.setText(savedTexts.get(selectedItemIndex));
 
 
+        Button deleteButton = findViewById(R.id.deleteItem_Button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(DetailsActivity.this)
+                        .setMessage("This action will delete the item. Are you sure?")
+                        .setNegativeButton("Cancel",null)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                savedTexts.remove(selectedItemIndex);
+                                saveUpdatedList(savedTexts);
+                                finish();
+                            }
+                        });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
     }
 
 
@@ -80,23 +107,29 @@ public class DetailsActivity extends AppCompatActivity {
 
                 //save new arraylist
 
-
                 Log.d(NewItemActivity.class.getSimpleName(), "onClick: " + savedTexts);
 
-                SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesName, Context.MODE_PRIVATE);
+                saveUpdatedList(savedTexts);
 
-                Gson gson = new Gson();
-
-                //save array list to shared preferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                String json = gson.toJson(savedTexts);
-                editor.putString(SharedPreferencesKey, json);
-                editor.apply();
             }
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void saveUpdatedList(ArrayList<String> updatedList){
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesName, Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+
+        //save array list to shared preferences
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String json = gson.toJson(savedTexts);
+        editor.putString(SharedPreferencesKey, json);
+        editor.apply();
+    }
+
 }

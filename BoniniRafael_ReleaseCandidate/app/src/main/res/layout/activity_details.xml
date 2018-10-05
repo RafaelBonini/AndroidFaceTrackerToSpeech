@@ -22,7 +22,7 @@
         android:layout_marginRight="70dp"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/deleteItem_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_red_dark"
