@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -23,6 +26,7 @@ import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafae
 
 public class ManagerActivity extends AppCompatActivity {
 
+    public static final String TAG = ManagerActivity.class.getSimpleName();
 
     ListView textList;
     ArrayList<String> texts;
@@ -33,8 +37,25 @@ public class ManagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manager);
 
         textList = findViewById(R.id.list);
-        
+
         setListFromStoredData();
+
+
+
+        textList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d(TAG, "onItemClick: pos   " + position + " id: " + id);
+
+                Intent intent = new Intent(ManagerActivity.this,DetailsActivity.class);
+
+                intent.putExtra("selectedText",position);
+
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override
@@ -43,6 +64,7 @@ public class ManagerActivity extends AppCompatActivity {
         setListFromStoredData();
     }
 
+    //get data stored use the data to create an adapter and set it as the list adapter
     public void setListFromStoredData(){
 
         ArrayList<String> stringArraylist;
