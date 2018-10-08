@@ -16,9 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Manager.ManagerActivity" />
-        <activity android:name=".Manager.NewItemActivity" />
-        <activity android:name=".Manager.DetailsActivity"></activity>
+        <activity android:name=".Text_Manager.ManagerActivity" />
+        <activity android:name=".Text_Manager.NewItemActivity" />
+        <activity android:name=".Text_Manager.DetailsActivity" />
+        <activity android:name=".FaceTracker.FaceTrackingActivity"></activity>
     </application>
 
 </manifest>

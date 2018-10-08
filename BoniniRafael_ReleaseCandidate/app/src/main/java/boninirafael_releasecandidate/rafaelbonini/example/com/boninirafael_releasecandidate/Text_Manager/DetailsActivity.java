@@ -1,4 +1,4 @@
-package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Manager;
+package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Text_Manager;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 import boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.R;
 
-import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Manager.NewItemActivity.SharedPreferencesKey;
-import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Manager.NewItemActivity.SharedPreferencesName;
+import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Text_Manager.NewItemActivity.SharedPreferencesKey;
+import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.Text_Manager.NewItemActivity.SharedPreferencesName;
 
 public class DetailsActivity extends AppCompatActivity {
 
