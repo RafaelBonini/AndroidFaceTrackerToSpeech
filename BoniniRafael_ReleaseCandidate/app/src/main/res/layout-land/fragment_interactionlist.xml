@@ -15,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Please add items in the manager beforehand"
-        android:id="@android:id/empty"/>
+        android:id="@android:id/empty"
+        android:gravity="center"/>
 
 
 

@@ -17,6 +17,9 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
     private static final float ID_X_OFFSET = -50.0f;
     private static final float BOX_STROKE_WIDTH = 5.0f;
 
+    Boolean rightEyeOpen = false;
+    Boolean leftEyeOpen = false;
+
     private static final int COLOR_CHOICES[] = {
             Color.BLUE,
             Color.CYAN,
@@ -59,6 +62,15 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         mLandmarkPaint.setColor(Color.BLACK);
     }
 
+
+    public void setRighteye(Boolean rightEyeOpen) {
+        this.rightEyeOpen = rightEyeOpen;
+    }
+
+    public void setLeftteye(Boolean leftEyeOpen) {
+        this.leftEyeOpen = leftEyeOpen;
+    }
+
     void setId(int id) {
         mFaceId = id;
     }
@@ -92,20 +104,32 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         canvas.drawText("right eye: " + String.format("%.2f", face.getIsRightEyeOpenProbability()), x + ID_X_OFFSET * 2-400, y + ID_Y_OFFSET * 2, mIdPaint);
         canvas.drawText("left eye: " + String.format("%.2f", face.getIsLeftEyeOpenProbability()), x + ID_X_OFFSET*2-400, y + ID_Y_OFFSET*2+34, mIdPaint);
 
-
-
-
-        for (Landmark landmark:face.getLandmarks()){
-
-            Log.d("blebleble", "draw: " +landmark.getType());
-
-
-            int cx = (int) (landmark.getPosition().x*2.3);
-            int cy = (int) (landmark.getPosition().y*2.3 );
-            canvas.drawCircle(cx, cy, 5, mLandmarkPaint);
-
-            Log.d("blablabla", "draw: " + cx + "  " + cy);
+        if (face.getIsRightEyeOpenProbability() <= 0.50){
+            rightEyeOpen = false;
+        }else{
+            rightEyeOpen = true;
         }
+
+        if (face.getIsLeftEyeOpenProbability() <= 0.50){
+            leftEyeOpen = false;
+        }else{
+            leftEyeOpen = true;
+        }
+
+
+
+
+//        for (Landmark landmark:face.getLandmarks()){
+//
+//            Log.d("blebleble", "draw: " +landmark.getType());
+//
+//
+//            int cx = (int) (landmark.getPosition().x*2.3);
+//            int cy = (int) (landmark.getPosition().y*2.3 );
+//            canvas.drawCircle(cx, cy, 5, mLandmarkPaint);
+//
+//            Log.d("blablabla", "draw: " + cx + "  " + cy);
+//        }
 
 
 

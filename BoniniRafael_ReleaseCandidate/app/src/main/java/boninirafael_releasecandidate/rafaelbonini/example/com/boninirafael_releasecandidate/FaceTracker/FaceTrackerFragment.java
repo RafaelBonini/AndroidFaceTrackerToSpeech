@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -24,6 +25,8 @@ import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -237,10 +240,14 @@ public class FaceTrackerFragment extends Fragment {
     private class GraphicFaceTracker extends Tracker<Face> {
         private GraphicOverlay mOverlay;
         private FaceGraphic mFaceGraphic;
+        TextView rightEyeLabel = getView().findViewById(R.id.right_eye_TV);
+        TextView leftEyeLabel = getView().findViewById(R.id.left_eye_TV);
 
         GraphicFaceTracker(GraphicOverlay overlay) {
             mOverlay = overlay;
             mFaceGraphic = new FaceGraphic(overlay);
+
+
         }
 
         /**
@@ -258,7 +265,24 @@ public class FaceTrackerFragment extends Fragment {
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
             mOverlay.add(mFaceGraphic);
             mFaceGraphic.updateFace(face);
+
+            Log.d("blebleble", "onCreate: "+ mFaceGraphic.rightEyeOpen);
+
+            if (mFaceGraphic.rightEyeOpen){
+
+                rightEyeLabel.setText("Right Eye: Open");
+            }else{
+                rightEyeLabel.setText("Right Eye: Closed");
+            }
+
+            if (mFaceGraphic.leftEyeOpen){
+
+                leftEyeLabel.setText("Left Eye: Open");
+            }else{
+                leftEyeLabel.setText("Left Eye: Closed");
+            }
         }
+
 
         /**
          * Hide the graphic when the corresponding face was not detected.  This can happen for

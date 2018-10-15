@@ -27,6 +27,7 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/left_eye_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Left Eye: Open"
@@ -35,6 +36,7 @@
         android:layout_marginLeft="5dp"/>
 
     <TextView
+        android:id="@+id/right_eye_TV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Right Eye: Open"

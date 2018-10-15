@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@android:color/holo_green_dark">
 
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.9">
 
         <boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.ui.camera.CameraSourcePreview
             android:id="@+id/preview"
@@ -25,20 +26,20 @@
         </boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.ui.camera.CameraSourcePreview>
     </FrameLayout>
 
-
-
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Left Eye: Open"
+        android:textSize="20dp"
+        android:layout_weight="0.05"
+        android:layout_marginLeft="5dp"/>
 
     <TextView
-        android:layout_weight="0.5"
-        android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="Landscape mode activated bleble"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        android:layout_height="wrap_content"
+        android:text="Right Eye: Open"
+        android:textSize="20dp"
+        android:layout_weight="0.05"
+        android:layout_marginLeft="5dp"/>
 
 </LinearLayout>

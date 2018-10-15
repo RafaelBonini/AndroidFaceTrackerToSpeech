@@ -27,11 +27,11 @@ public class FaceTrackingActivity extends AppCompatActivity {
 
 
 
-//            InteractionListFragment interactionListFragment = new InteractionListFragment().newInstance();
-//
-//            getFragmentManager().beginTransaction()
-//                    .replace(R.id.list_fragment_container,interactionListFragment,interactionListFragment.TAG)
-//                    .commit();
+            InteractionListFragment interactionListFragment = new InteractionListFragment().newInstance();
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.list_fragment_container,interactionListFragment)
+                    .commit();
         }
     }
 }
