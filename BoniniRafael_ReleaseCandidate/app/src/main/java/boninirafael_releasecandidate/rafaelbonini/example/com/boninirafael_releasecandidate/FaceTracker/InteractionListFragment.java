@@ -4,17 +4,22 @@ import android.app.ListFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeechService;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.R;
 
@@ -23,7 +28,7 @@ import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafae
 
 public class InteractionListFragment extends ListFragment {
 
-    public static final String TAG = "InteractionListFragment.TAG";
+    public static final String TAG = "InteractionListFrag.TAG";
 
     public InteractionListFragment newInstance(){
         return new InteractionListFragment();
@@ -60,5 +65,34 @@ public class InteractionListFragment extends ListFragment {
         );
 
         setListAdapter(adapter);
+    }
+
+    TextToSpeech toSpeech;
+
+
+
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+
+         toSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status!=TextToSpeech.ERROR){
+                    toSpeech.setLanguage(Locale.US);
+
+                }
+            }
+        });
+
+         String textToSpeak = l.getItemAtPosition(position).toString();
+
+         toSpeech.speak(textToSpeak,TextToSpeech.QUEUE_FLUSH,null);
+
+
+
+        Log.d(TAG, "onListItemClick: " + l.getItemAtPosition(position) + "  : " + v.getTag(position));
+//        String textToSpeak =
     }
 }

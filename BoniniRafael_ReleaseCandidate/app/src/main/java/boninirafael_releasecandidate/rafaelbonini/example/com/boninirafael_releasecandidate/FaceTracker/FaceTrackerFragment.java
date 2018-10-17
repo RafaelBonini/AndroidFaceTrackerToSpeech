@@ -268,19 +268,45 @@ public class FaceTrackerFragment extends Fragment {
 
             Log.d("blebleble", "onCreate: "+ mFaceGraphic.rightEyeOpen);
 
+            int counterLeft = 0;
+            int counterRight = 0;
+
             if (mFaceGraphic.rightEyeOpen){
 
                 rightEyeLabel.setText("Right Eye: Open");
+
+                counterRight+=1;
+//                counterLeft=0;
+
             }else{
                 rightEyeLabel.setText("Right Eye: Closed");
+                counterRight=0;
+//                counterLeft=0;
             }
 
             if (mFaceGraphic.leftEyeOpen){
 
                 leftEyeLabel.setText("Left Eye: Open");
+                counterLeft+=1;
+//                counterRight=0;
             }else{
                 leftEyeLabel.setText("Left Eye: Closed");
+                counterLeft=0;
+//                counterRight=0;
             }
+
+            if (counterLeft < 5){
+
+                Log.d(TAG, "onUpdate: " + "MOVE UP IF POSSIBLE");
+                counterLeft =0;
+            }
+
+            if (counterRight < 5){
+
+                Log.d(TAG, "onUpdate: " + "MOVE DOWN IF POSSIBLE");
+                counterRight = 0;
+            }
+
         }
 
 
