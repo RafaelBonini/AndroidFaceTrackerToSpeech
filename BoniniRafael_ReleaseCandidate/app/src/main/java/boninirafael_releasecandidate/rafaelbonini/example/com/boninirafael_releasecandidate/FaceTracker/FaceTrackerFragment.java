@@ -5,10 +5,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -47,6 +52,9 @@ public class FaceTrackerFragment extends Fragment {
     // permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
+
+//    InteractionListFragment fragment = null;
+
     public FaceTrackerFragment newIntance(){
         return new FaceTrackerFragment();
     }
@@ -61,6 +69,9 @@ public class FaceTrackerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+//        FragmentManager fm = getFragmentManager();
+//        fragment =(InteractionListFragment) fm.findFragmentById(R.id.list_fragment_container);
 
         mPreview = (CameraSourcePreview) getActivity().findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay) getActivity().findViewById(R.id.faceOverlay);
@@ -242,6 +253,7 @@ public class FaceTrackerFragment extends Fragment {
         private FaceGraphic mFaceGraphic;
         TextView rightEyeLabel = getView().findViewById(R.id.right_eye_TV);
         TextView leftEyeLabel = getView().findViewById(R.id.left_eye_TV);
+//        InteractionListFragment bla = new InteractionListFragment();
 
         GraphicFaceTracker(GraphicOverlay overlay) {
             mOverlay = overlay;
@@ -261,6 +273,8 @@ public class FaceTrackerFragment extends Fragment {
         /**
          * Update the position/characteristics of the face within the overlay.
          */
+        int counterLeft = 0;
+        int counterRight = 0;
         @Override
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
             mOverlay.add(mFaceGraphic);
@@ -268,42 +282,61 @@ public class FaceTrackerFragment extends Fragment {
 
             Log.d("blebleble", "onCreate: "+ mFaceGraphic.rightEyeOpen);
 
-            int counterLeft = 0;
-            int counterRight = 0;
+
 
             if (mFaceGraphic.rightEyeOpen){
 
                 rightEyeLabel.setText("Right Eye: Open");
 
-                counterRight+=1;
+                counterRight=0;
+
 //                counterLeft=0;
 
             }else{
                 rightEyeLabel.setText("Right Eye: Closed");
-                counterRight=0;
+                counterRight+=1;
 //                counterLeft=0;
             }
 
             if (mFaceGraphic.leftEyeOpen){
 
                 leftEyeLabel.setText("Left Eye: Open");
-                counterLeft+=1;
+                counterLeft=0;
 //                counterRight=0;
             }else{
                 leftEyeLabel.setText("Left Eye: Closed");
-                counterLeft=0;
+
+                counterLeft+=1;
 //                counterRight=0;
             }
 
-            if (counterLeft < 5){
+            Log.d(TAG, "onUpdate: " + "counter left: " + counterLeft);
+            Log.d(TAG, "onUpdate: " + "counter right: " + counterRight);
+            if (counterLeft > 10){
 
                 Log.d(TAG, "onUpdate: " + "MOVE UP IF POSSIBLE");
+
+                ((FaceTrackingActivity)getActivity()).goUpOnList();
+
                 counterLeft =0;
             }
 
-            if (counterRight < 5){
+            if (counterRight > 10){
 
                 Log.d(TAG, "onUpdate: " + "MOVE DOWN IF POSSIBLE");
+
+
+
+
+//                fragment.moveDown();
+
+
+                ((FaceTrackingActivity)getActivity()).goDownOnList();
+
+//                Thread thread = new Thread(loadRunnable);
+//                thread.start();
+
+
                 counterRight = 0;
             }
 
@@ -328,6 +361,35 @@ public class FaceTrackerFragment extends Fragment {
         public void onDone() {
             mOverlay.remove(mFaceGraphic);
         }
+
+
+
+//         Runnable loadRunnable = new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+//
+////                Gen.popup("TEST"); // Creates a toast pop-up.
+//                // This is to know if this runnable is running on UI thread or not!
+//
+//                try
+//                {
+//                    InteractionListFragment bla = new InteractionListFragment();
+//                    bla.moveDown();
+//                }
+//                catch (final Exception ex)
+//                {
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+////                            getActivity().Gen.popup(ex.getMessage());
+//                        }
+//                    });
+//                }
+//            }
+//        };
     }
 
 }

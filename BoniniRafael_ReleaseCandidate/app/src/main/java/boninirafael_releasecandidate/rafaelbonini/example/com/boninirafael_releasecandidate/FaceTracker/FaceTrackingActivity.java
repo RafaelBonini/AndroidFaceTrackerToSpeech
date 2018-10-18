@@ -2,6 +2,7 @@ package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_rele
 
 import android.content.pm.ActivityInfo;
 import android.media.FaceDetector;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,6 +20,15 @@ public class FaceTrackingActivity extends AppCompatActivity {
 
         if (savedInstanceState == null){
 
+
+            InteractionListFragment interactionListFragment = new InteractionListFragment().newInstance();
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.list_fragment_container,interactionListFragment,InteractionListFragment.TAG)
+                    .commit();
+        }
+
+
             FaceTrackerFragment faceTrackerFragment = new FaceTrackerFragment().newIntance();
 
             getFragmentManager().beginTransaction()
@@ -27,11 +37,26 @@ public class FaceTrackingActivity extends AppCompatActivity {
 
 
 
-            InteractionListFragment interactionListFragment = new InteractionListFragment().newInstance();
 
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.list_fragment_container,interactionListFragment)
-                    .commit();
-        }
+    }
+
+
+    public void goUpOnList(){
+        android.app.FragmentManager fm = getFragmentManager();
+
+        //if you added fragment via layout xml
+        InteractionListFragment fragment = (InteractionListFragment) fm.findFragmentByTag("InteractionListFrag.TAG");
+        fragment.moveUP();
+
+    }
+
+    public void goDownOnList(){
+
+
+        android.app.FragmentManager fm = getFragmentManager();
+
+        //if you added fragment via layout xml
+        InteractionListFragment fragment = (InteractionListFragment) fm.findFragmentByTag("InteractionListFrag.TAG");
+        fragment.moveDown();
     }
 }

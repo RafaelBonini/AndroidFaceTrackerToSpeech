@@ -44,6 +44,9 @@ public class InteractionListFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
         ArrayList<String> savedTexts;
 
         //load data from shared preferences
@@ -60,17 +63,66 @@ public class InteractionListFragment extends ListFragment {
 
         ArrayAdapter adapter = new ArrayAdapter<>(
                 getActivity(),
-                android.R.layout.simple_list_item_1,
+//                android.R.layout.simple_list_item_1,
+                android.R.layout.simple_list_item_activated_1,
                 savedTexts
         );
 
         setListAdapter(adapter);
+
+        getListView().setItemChecked(0, true);
     }
 
+
+    public void moveDown(){
+
+
+//        getListView().setItemChecked(checked+1,true);
+
+//        getListView().setItemChecked(1, true);
+        Log.d(TAG, "moveDown: ");
+
+
+        getActivity().runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                int checked = getListView().getCheckedItemPosition();
+
+                int pos = checked+1;
+
+                getListView().setItemChecked(pos, true);
+
+            }
+        });
+
+    }
+
+    public void moveUP(){
+
+        Log.d(TAG, "moveUP: ");
+
+
+        getActivity().runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                int checked = getListView().getCheckedItemPosition();
+
+                int pos = checked-1;
+
+                getListView().setItemChecked(pos, true);
+
+            }
+        });
+
+    }
+
+
+
     TextToSpeech toSpeech;
-
-
-
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
