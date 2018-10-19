@@ -15,7 +15,6 @@ public class FaceTrackingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_face_tracking);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 
         if (savedInstanceState == null){
@@ -58,5 +57,15 @@ public class FaceTrackingActivity extends AppCompatActivity {
         //if you added fragment via layout xml
         InteractionListFragment fragment = (InteractionListFragment) fm.findFragmentByTag("InteractionListFrag.TAG");
         fragment.moveDown();
+    }
+
+    public void clickSelectedItem(){
+
+        android.app.FragmentManager fm = getFragmentManager();
+
+        //if you added fragment via layout xml
+        InteractionListFragment fragment = (InteractionListFragment) fm.findFragmentByTag("InteractionListFrag.TAG");
+        fragment.clickItem();
+
     }
 }

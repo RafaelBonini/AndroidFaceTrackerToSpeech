@@ -3,6 +3,7 @@ package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_rele
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeechService;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -29,6 +32,7 @@ import static boninirafael_releasecandidate.rafaelbonini.example.com.boninirafae
 public class InteractionListFragment extends ListFragment {
 
     public static final String TAG = "InteractionListFrag.TAG";
+    int selectedItem = 0;
 
     public InteractionListFragment newInstance(){
         return new InteractionListFragment();
@@ -40,12 +44,43 @@ public class InteractionListFragment extends ListFragment {
         return inflater.inflate(R.layout.fragment_interactionlist,container,false);
     }
 
+    TextToSpeech toSpeech;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
 
         getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+
+        toSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+
+                if (status == toSpeech.SUCCESS){
+                    int result = toSpeech.setLanguage(Locale.US);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED ){
+                        Toast.makeText(getActivity(),"This lanaguage is not supported",Toast.LENGTH_SHORT).show();
+                    }else{
+
+//                        toSpeech.setPitch(0.6f);
+//                        toSpeech.setSpeechRate(1.0f);
+//                        String text =  l.getItemAtPosition(position).toString();
+//                        speak(text);
+                    }
+
+
+                }
+
+//                if (status!=TextToSpeech.ERROR){
+//                    toSpeech.setLanguage(Locale.US);
+//
+//                }
+            }
+        });
+
 
         ArrayList<String> savedTexts;
 
@@ -71,17 +106,41 @@ public class InteractionListFragment extends ListFragment {
         setListAdapter(adapter);
 
         getListView().setItemChecked(0, true);
+
+
+    }
+
+
+    public void clickItem(){
+
+
+//        mList.performItemClick(mList.getChildAt(mActivePosition), mActivePosition, mList.getAdapter().getItemId(mActivePosition));
+
+        Log.d(TAG, "clickItem: " + selectedItem);
+
+
+
+
+        getActivity().runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+
+
+
+                getListView().performItemClick(getListView(),getListView().getCheckedItemPosition(),getListView().getCheckedItemPosition());
+
+            }
+        });
     }
 
 
     public void moveDown(){
 
-
-//        getListView().setItemChecked(checked+1,true);
-
-//        getListView().setItemChecked(1, true);
         Log.d(TAG, "moveDown: ");
 
+        Log.d(TAG, "onActivityCreated: ");
 
         getActivity().runOnUiThread(new Runnable() {
 
@@ -91,6 +150,13 @@ public class InteractionListFragment extends ListFragment {
                 int checked = getListView().getCheckedItemPosition();
 
                 int pos = checked+1;
+
+                //if selection goes further than last item go back to first
+                if(getListView().getAdapter().getCount() == pos){
+                    pos = 0;
+                }
+
+                selectedItem = pos;
 
                 getListView().setItemChecked(pos, true);
 
@@ -113,6 +179,11 @@ public class InteractionListFragment extends ListFragment {
 
                 int pos = checked-1;
 
+                if (pos < 0){
+                    pos = getListView().getAdapter().getCount()-1;
+                }
+
+                selectedItem = pos;
                 getListView().setItemChecked(pos, true);
 
             }
@@ -122,29 +193,30 @@ public class InteractionListFragment extends ListFragment {
 
 
 
-    TextToSpeech toSpeech;
+
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(final ListView l, View v, final int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-         toSpeech = new TextToSpeech(getActivity(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status!=TextToSpeech.ERROR){
-                    toSpeech.setLanguage(Locale.US);
 
-                }
-            }
-        });
+        String text = l.getItemAtPosition(position).toString();
 
-         String textToSpeak = l.getItemAtPosition(position).toString();
-
-         toSpeech.speak(textToSpeak,TextToSpeech.QUEUE_FLUSH,null);
-
-
+        speak(text);
 
         Log.d(TAG, "onListItemClick: " + l.getItemAtPosition(position) + "  : " + v.getTag(position));
-//        String textToSpeak =
+
+    }
+
+    private void speak(String itemText) {
+
+        String textToSpeak = itemText;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            toSpeech.speak(textToSpeak,TextToSpeech.QUEUE_FLUSH,null,null);
+        }else{
+            toSpeech.speak(textToSpeak,TextToSpeech.QUEUE_FLUSH,null);
+        }
+
     }
 }

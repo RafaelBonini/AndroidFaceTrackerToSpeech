@@ -27,7 +27,8 @@
         <activity android:name=".Text_Manager.ManagerActivity" />
         <activity android:name=".Text_Manager.NewItemActivity" />
         <activity android:name=".Text_Manager.DetailsActivity" />
-        <activity android:name=".FaceTracker.FaceTrackingActivity"></activity>
+        <activity android:name=".FaceTracker.FaceTrackingActivity"
+            android:screenOrientation="landscape"></activity>
 
 
 

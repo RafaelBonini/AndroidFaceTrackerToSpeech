@@ -275,6 +275,7 @@ public class FaceTrackerFragment extends Fragment {
          */
         int counterLeft = 0;
         int counterRight = 0;
+        boolean repeat = true;
         @Override
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
             mOverlay.add(mFaceGraphic);
@@ -312,33 +313,51 @@ public class FaceTrackerFragment extends Fragment {
 
             Log.d(TAG, "onUpdate: " + "counter left: " + counterLeft);
             Log.d(TAG, "onUpdate: " + "counter right: " + counterRight);
-            if (counterLeft > 10){
+
+
+            while(repeat) {
+                if (counterLeft > 2 && counterRight > 2) {
+                    counterRight = 0;
+                    counterLeft = 0;
+                    repeat = false;
+                }
+            }
+
+            if (counterLeft > 8 && counterRight > 8){
+
+                ((FaceTrackingActivity)getActivity()).clickSelectedItem();
+
+                counterRight = 0;
+                counterLeft = 0;
+                repeat = true;
+            }
+
+
+            if (counterLeft > 11){
 
                 Log.d(TAG, "onUpdate: " + "MOVE UP IF POSSIBLE");
 
                 ((FaceTrackingActivity)getActivity()).goUpOnList();
 
-                counterLeft =0;
+                counterRight = 0;
+                counterLeft = 0;
+                repeat = true;
             }
 
-            if (counterRight > 10){
+            if (counterRight > 11){
 
                 Log.d(TAG, "onUpdate: " + "MOVE DOWN IF POSSIBLE");
 
-
-
-
-//                fragment.moveDown();
-
-
                 ((FaceTrackingActivity)getActivity()).goDownOnList();
-
-//                Thread thread = new Thread(loadRunnable);
-//                thread.start();
 
 
                 counterRight = 0;
+                counterLeft = 0;
+                repeat = true;
             }
+
+
+
 
         }
 
