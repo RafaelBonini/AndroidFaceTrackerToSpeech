@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeechService;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -58,26 +56,16 @@ public class InteractionListFragment extends ListFragment {
             @Override
             public void onInit(int status) {
 
-                if (status == toSpeech.SUCCESS){
+                if (status == TextToSpeech.SUCCESS){
                     int result = toSpeech.setLanguage(Locale.US);
 
                     if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED ){
-                        Toast.makeText(getActivity(),"This lanaguage is not supported",Toast.LENGTH_SHORT).show();
-                    }else{
-
-//                        toSpeech.setPitch(0.6f);
-//                        toSpeech.setSpeechRate(1.0f);
-//                        String text =  l.getItemAtPosition(position).toString();
-//                        speak(text);
+                        Toast.makeText(getActivity(),"This language is not supported",Toast.LENGTH_SHORT).show();
                     }
 
 
-                }
 
-//                if (status!=TextToSpeech.ERROR){
-//                    toSpeech.setLanguage(Locale.US);
-//
-//                }
+                }
             }
         });
 
@@ -192,8 +180,15 @@ public class InteractionListFragment extends ListFragment {
     }
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (toSpeech != null){
 
-
+            toSpeech.stop();
+            toSpeech.shutdown();
+        }
+    }
 
     @Override
     public void onListItemClick(final ListView l, View v, final int position, long id) {
@@ -210,12 +205,11 @@ public class InteractionListFragment extends ListFragment {
 
     private void speak(String itemText) {
 
-        String textToSpeak = itemText;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            toSpeech.speak(textToSpeak,TextToSpeech.QUEUE_FLUSH,null,null);
+            toSpeech.speak(itemText,TextToSpeech.QUEUE_FLUSH,null,null);
         }else{
-            toSpeech.speak(textToSpeak,TextToSpeech.QUEUE_FLUSH,null);
+            toSpeech.speak(itemText,TextToSpeech.QUEUE_FLUSH,null);
         }
 
     }

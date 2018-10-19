@@ -3,10 +3,8 @@ package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_rele
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 
 import com.google.android.gms.vision.face.Face;
-import com.google.android.gms.vision.face.Landmark;
 
 import boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.ui.camera.GraphicOverlay;
 
@@ -37,8 +35,6 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
     private Paint mLandmarkPaint;
 
     private volatile Face mFace;
-    private int mFaceId;
-    private float mFaceHappiness;
 
     FaceGraphic(GraphicOverlay overlay) {
         super(overlay);
@@ -71,9 +67,6 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         this.leftEyeOpen = leftEyeOpen;
     }
 
-    void setId(int id) {
-        mFaceId = id;
-    }
 
 
     /**
@@ -104,34 +97,9 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
         canvas.drawText("right eye: " + String.format("%.2f", face.getIsRightEyeOpenProbability()), x + ID_X_OFFSET * 2-400, y + ID_Y_OFFSET * 2, mIdPaint);
         canvas.drawText("left eye: " + String.format("%.2f", face.getIsLeftEyeOpenProbability()), x + ID_X_OFFSET*2-400, y + ID_Y_OFFSET*2+34, mIdPaint);
 
-        if (face.getIsRightEyeOpenProbability() <= 0.50){
-            rightEyeOpen = false;
-        }else{
-            rightEyeOpen = true;
-        }
+        rightEyeOpen = !(face.getIsRightEyeOpenProbability() <= 0.60);
 
-        if (face.getIsLeftEyeOpenProbability() <= 0.50){
-            leftEyeOpen = false;
-        }else{
-            leftEyeOpen = true;
-        }
-
-
-
-
-//        for (Landmark landmark:face.getLandmarks()){
-//
-//            Log.d("blebleble", "draw: " +landmark.getType());
-//
-//
-//            int cx = (int) (landmark.getPosition().x*2.3);
-//            int cy = (int) (landmark.getPosition().y*2.3 );
-//            canvas.drawCircle(cx, cy, 5, mLandmarkPaint);
-//
-//            Log.d("blablabla", "draw: " + cx + "  " + cy);
-//        }
-
-
+        leftEyeOpen = !(face.getIsLeftEyeOpenProbability() <= 0.60);
 
 
         // Draws a bounding box around the face.

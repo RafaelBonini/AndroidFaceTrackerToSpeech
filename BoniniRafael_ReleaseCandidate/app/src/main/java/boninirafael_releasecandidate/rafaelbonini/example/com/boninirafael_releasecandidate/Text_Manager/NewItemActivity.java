@@ -54,7 +54,7 @@ public class NewItemActivity extends AppCompatActivity {
 
             if (!input.equals("")){
 
-                ArrayList<String> texts = new ArrayList<>();
+                ArrayList<String> texts;
 
                 //load data from shared preferences
                 SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesName, Context.MODE_PRIVATE);

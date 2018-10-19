@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Please add items in the manager beforehand"
+        android:text="@string/please_add_items_in_the_manager_beforehand"
         android:id="@android:id/empty"/>
 
 

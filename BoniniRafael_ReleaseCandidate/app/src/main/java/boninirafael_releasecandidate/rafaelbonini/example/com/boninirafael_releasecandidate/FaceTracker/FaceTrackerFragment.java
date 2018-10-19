@@ -2,18 +2,13 @@ package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_rele
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
@@ -31,9 +26,8 @@ import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
+import java.util.Objects;
 
 import boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.R;
 import boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.ui.camera.CameraSourcePreview;
@@ -73,8 +67,8 @@ public class FaceTrackerFragment extends Fragment {
 //        FragmentManager fm = getFragmentManager();
 //        fragment =(InteractionListFragment) fm.findFragmentById(R.id.list_fragment_container);
 
-        mPreview = (CameraSourcePreview) getActivity().findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay) getActivity().findViewById(R.id.faceOverlay);
+        mPreview = getActivity().findViewById(R.id.preview);
+        mGraphicOverlay = getActivity().findViewById(R.id.faceOverlay);
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
@@ -200,7 +194,7 @@ public class FaceTrackerFragment extends Fragment {
      * @see #requestPermissions(String[], int)
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode != RC_HANDLE_CAMERA_PERM) {
             Log.d(TAG, "Got unexpected permission result: " + requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -251,23 +245,13 @@ public class FaceTrackerFragment extends Fragment {
     private class GraphicFaceTracker extends Tracker<Face> {
         private GraphicOverlay mOverlay;
         private FaceGraphic mFaceGraphic;
-        TextView rightEyeLabel = getView().findViewById(R.id.right_eye_TV);
+        TextView rightEyeLabel = Objects.requireNonNull(getView()).findViewById(R.id.right_eye_TV);
         TextView leftEyeLabel = getView().findViewById(R.id.left_eye_TV);
 //        InteractionListFragment bla = new InteractionListFragment();
 
         GraphicFaceTracker(GraphicOverlay overlay) {
             mOverlay = overlay;
             mFaceGraphic = new FaceGraphic(overlay);
-
-
-        }
-
-        /**
-         * Start tracking the detected face instance within the face overlay.
-         */
-        @Override
-        public void onNewItem(int faceId, Face item) {
-            mFaceGraphic.setId(faceId);
         }
 
         /**
@@ -275,7 +259,7 @@ public class FaceTrackerFragment extends Fragment {
          */
         int counterLeft = 0;
         int counterRight = 0;
-        boolean repeat = true;
+
         @Override
         public void onUpdate(FaceDetector.Detections<Face> detectionResults, Face face) {
             mOverlay.add(mFaceGraphic);
@@ -285,76 +269,95 @@ public class FaceTrackerFragment extends Fragment {
 
 
 
-            if (mFaceGraphic.rightEyeOpen){
-
-                rightEyeLabel.setText("Right Eye: Open");
-
-                counterRight=0;
-
-//                counterLeft=0;
-
-            }else{
-                rightEyeLabel.setText("Right Eye: Closed");
-                counterRight+=1;
-//                counterLeft=0;
-            }
-
-            if (mFaceGraphic.leftEyeOpen){
-
-                leftEyeLabel.setText("Left Eye: Open");
-                counterLeft=0;
-//                counterRight=0;
-            }else{
-                leftEyeLabel.setText("Left Eye: Closed");
-
-                counterLeft+=1;
-//                counterRight=0;
-            }
-
-            Log.d(TAG, "onUpdate: " + "counter left: " + counterLeft);
-            Log.d(TAG, "onUpdate: " + "counter right: " + counterRight);
 
 
-            while(repeat) {
-                if (counterLeft > 2 && counterRight > 2) {
-                    counterRight = 0;
-                    counterLeft = 0;
-                    repeat = false;
+
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    //TODO your background code
+
+                    boolean leftOpen = mFaceGraphic.leftEyeOpen;
+                    boolean rightOpen = mFaceGraphic.rightEyeOpen;
+
+
+                    if (rightOpen){
+
+                        rightEyeLabel.setText("Right Eye: Open");
+
+                        counterRight=0;
+
+
+                    }else{
+                        rightEyeLabel.setText("Right Eye: Closed");
+                        counterRight+=1;
+                    }
+
+                    if (leftOpen){
+
+                        leftEyeLabel.setText("Left Eye: Open");
+                        counterLeft=0;
+                    }else{
+                        leftEyeLabel.setText("Left Eye: Closed");
+
+                        counterLeft+=1;
+                    }
+
+                    Log.d(TAG, "onUpdate: " + "counter left: " + counterLeft);
+                    Log.d(TAG, "onUpdate: " + "counter right: " + counterRight);
+
+
+                    if (!leftOpen && !rightOpen){
+                        //only run if one or both eyes are closed
+
+
+
+                        if (counterLeft > 6 && counterRight > 6){
+
+                        ((FaceTrackingActivity)getActivity()).clickSelectedItem();
+
+                        counterRight = 0;
+                        counterLeft = 0;
+                    }
+
+
+                        if (counterRight > 11){
+
+                            Log.d(TAG, "onUpdate: " + "MOVE DOWN IF POSSIBLE");
+
+                            ((FaceTrackingActivity)getActivity()).goDownOnList();
+
+
+                            counterRight = 0;
+                            counterLeft = 0;
+                        }
+
+
+
+
+                        if (counterLeft > 11){
+
+                            Log.d(TAG, "onUpdate: " + "MOVE UP IF POSSIBLE");
+
+                            ((FaceTrackingActivity)getActivity()).goUpOnList();
+
+                            counterRight = 0;
+                            counterLeft = 0;
+                        }
+                    }
+
+
+
+
+
+
                 }
-            }
-
-            if (counterLeft > 8 && counterRight > 8){
-
-                ((FaceTrackingActivity)getActivity()).clickSelectedItem();
-
-                counterRight = 0;
-                counterLeft = 0;
-                repeat = true;
-            }
+            });
 
 
-            if (counterLeft > 11){
-
-                Log.d(TAG, "onUpdate: " + "MOVE UP IF POSSIBLE");
-
-                ((FaceTrackingActivity)getActivity()).goUpOnList();
-
-                counterRight = 0;
-                counterLeft = 0;
-                repeat = true;
-            }
-
-            if (counterRight > 11){
-
-                Log.d(TAG, "onUpdate: " + "MOVE DOWN IF POSSIBLE");
-
-                ((FaceTrackingActivity)getActivity()).goDownOnList();
 
 
-                counterRight = 0;
-                counterLeft = 0;
-                repeat = true;
-            }
 
 
 
@@ -381,34 +384,6 @@ public class FaceTrackerFragment extends Fragment {
             mOverlay.remove(mFaceGraphic);
         }
 
-
-
-//         Runnable loadRunnable = new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
-//
-////                Gen.popup("TEST"); // Creates a toast pop-up.
-//                // This is to know if this runnable is running on UI thread or not!
-//
-//                try
-//                {
-//                    InteractionListFragment bla = new InteractionListFragment();
-//                    bla.moveDown();
-//                }
-//                catch (final Exception ex)
-//                {
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-////                            getActivity().Gen.popup(ex.getMessage());
-//                        }
-//                    });
-//                }
-//            }
-//        };
     }
 
 }

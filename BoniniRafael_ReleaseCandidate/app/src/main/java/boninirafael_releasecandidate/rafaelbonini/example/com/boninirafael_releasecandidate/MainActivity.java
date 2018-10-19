@@ -2,7 +2,6 @@ package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_rele
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
 
+            Log.d("MainActivity", "onCreate: Camera  Permission granted");
         }else{
             // Request permissions if we don't have them.
             ActivityCompat.requestPermissions(this,

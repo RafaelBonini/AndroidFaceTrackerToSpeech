@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="1"
-    android:background="@android:color/holo_green_dark">
+    android:background="@android:color/holo_green_light">
 
 
     <FrameLayout
@@ -29,17 +28,17 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Left Eye: Open"
-        android:textSize="20dp"
+        android:text="@string/left_eye_open"
+        android:textSize="20sp"
         android:layout_weight="0.05"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginStart="5dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Right Eye: Open"
-        android:textSize="20dp"
+        android:text="@string/right_eye_open"
+        android:textSize="20sp"
         android:layout_weight="0.05"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginStart="5dp"/>
 
 </LinearLayout>

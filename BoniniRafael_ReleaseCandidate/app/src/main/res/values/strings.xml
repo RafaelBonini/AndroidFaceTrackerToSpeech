@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">BoniniRafael_ReleaseCandidate</string>
+    <string name="delete">Delete</string>
+    <string name="start_interacting">Start Interacting</string>
+    <string name="interaction_manager">Interaction Manager</string>
+    <string name="enter_text">Enter text..</string>
+    <string name="left_eye_open">Left Eye: Open</string>
+    <string name="right_eye_open">Right Eye: Open</string>
+    <string name="please_add_items_in_the_manager_beforehand">Please add items in the manager beforehand</string>
+    <string name="addnewitem">addNewItem</string>
 </resources>

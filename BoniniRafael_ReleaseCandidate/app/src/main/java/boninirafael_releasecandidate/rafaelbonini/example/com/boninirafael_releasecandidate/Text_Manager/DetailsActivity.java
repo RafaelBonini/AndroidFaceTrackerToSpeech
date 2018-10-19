@@ -72,7 +72,7 @@ public class DetailsActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 savedTexts.remove(selectedItemIndex);
-                                saveUpdatedList(savedTexts);
+                                saveUpdatedList();
                                 finish();
                             }
                         });
@@ -109,7 +109,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                 Log.d(NewItemActivity.class.getSimpleName(), "onClick: " + savedTexts);
 
-                saveUpdatedList(savedTexts);
+                saveUpdatedList();
 
             }
             finish();
@@ -118,7 +118,7 @@ public class DetailsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveUpdatedList(ArrayList<String> updatedList){
+    private void saveUpdatedList(){
 
         SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesName, Context.MODE_PRIVATE);
 

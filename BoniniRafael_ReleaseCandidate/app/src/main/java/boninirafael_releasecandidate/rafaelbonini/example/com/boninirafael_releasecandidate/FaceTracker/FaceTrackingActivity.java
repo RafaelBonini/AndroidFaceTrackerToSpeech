@@ -1,8 +1,5 @@
 package boninirafael_releasecandidate.rafaelbonini.example.com.boninirafael_releasecandidate.FaceTracker;
 
-import android.content.pm.ActivityInfo;
-import android.media.FaceDetector;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 

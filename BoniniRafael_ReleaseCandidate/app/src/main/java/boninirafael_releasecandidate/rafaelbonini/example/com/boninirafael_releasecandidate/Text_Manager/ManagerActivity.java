@@ -29,7 +29,7 @@ public class ManagerActivity extends AppCompatActivity {
     public static final String TAG = ManagerActivity.class.getSimpleName();
 
     ListView textList;
-    ArrayList<String> texts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
